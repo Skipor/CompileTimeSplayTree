@@ -13,6 +13,93 @@
 #include <iostream>
 
 
+struct nil {
+};
+
+//  /   /   /   /
+
+/// /   /   /   /   /   /   /   /
+
+
+template <typename T>
+struct Error {
+    typedef typename T::error_type result;
+    static const bool value = T::error_bool_value;
+
+};
+
+///    /   /   /   //      /   /   //
+
+template <typename T>
+struct NOT_NIL {
+    static bool const value = true;
+};
+
+template <>
+struct NOT_NIL<nil> {
+    static bool const value = false;
+};
+/////////////////
+template <typename Type, Type value>
+struct Constant {
+};
+
+///////////////
+
+template <typename T>
+struct print_type {
+
+    static void print() {
+        std::cout << typeid(T).name() << std::endl;
+    }
+
+};
+
+template <typename T, T value>
+struct print_type< Constant<T, value> > {
+
+    static void print() {
+        std::cout << value;
+    }
+
+};
+
+/////////
+
+//template <typename T>
+//struct cmp <T, T> {
+//    static bool const value = true;
+//};
+
+
+
+template <typename A, typename B>
+struct is_less {
+    static  bool const value = Error<A>::value;
+};
+
+template <typename T, T valueL, T valueR>
+struct is_less<Constant<T, valueL>, Constant<T, valueR> > {
+    static  bool const value = valueL < valueR;
+};
+
+
+
+template <typename A, typename B>
+struct is_more {
+    static  bool const value = Error<A>::value;
+};
+
+
+
+template <typename T, T valueL, T valueR>
+struct is_more<Constant<T, valueL>, Constant<T, valueR> > {
+    static  bool const value = valueL > valueR;
+};
+
+/////// /   /   /   /   /   /   /
+
+
 template <bool condition, typename Then, typename Else>
 struct IF {
 };
@@ -43,63 +130,15 @@ struct is_same  <T, T> {
 ////////////
 
 
+
 template <typename A, typename B, typename Then, typename Else>
 struct IF_same {
-    typedef IF<is_same<A, B>::value, Then, Else> result;
-};
-
-/////////////////
-template <typename Type, Type value>
-struct Constant {
+    typedef typename IF<is_same<A, B>::value, Then, Else>::result result;
 };
 
 
 
 
-
-///////////////
-
-template <typename T>
-struct print_type {
-
-    static void print() {
-        std::cout << typeid(T).name() << std::endl;
-    }
-
-};
-
-template <typename T, T value>
-struct print_type< Constant<T, value> > {
-
-    static void print() {
-        std::cout << value << std::endl;
-    }
-
-};
-
-/////////
-
-
-template <typename A, typename B>
-struct cmp {
-    static const bool value = false;
-//    static_assert(false, "compare different types");
-};
-
-//template <typename T>
-//struct cmp <T, T> {
-//    static bool const value = true;
-//};
-
-template <typename T, T valueL, T valueR>
-struct cmp<Constant<T, valueL>, Constant<T, valueR> > {
-    static const bool value = valueL < valueR;
-};
- ///    /   /   /   //      /   /   //
-template <typename T>
-struct Error {
-     typedef typename T::error_field result;
-};
 
 
 
