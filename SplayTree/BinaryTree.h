@@ -101,14 +101,15 @@ struct debug_internal_print_tree {
 template <typename Left, typename Right, typename Data, size_t depth>
 struct debug_internal_print_tree < node<Left, Right, Data>,  depth> {
 
-    static void print(){
+    static void print() {
+        std::cout << "(";
         debug_internal_print_tree<Left, depth + 1>::print();
-        std::cout << " " << depth << "_";
+        std::cout << " {" << depth << "_";
 
         print_type<Data>::print();
-        std::cout <<  " ";
+        std::cout << "} ";
         debug_internal_print_tree<Right, depth + 1>::print();
-        std::cout <<  " ";
+        std::cout << ") ";
     }
 };
 
@@ -168,6 +169,18 @@ struct right_rotate<node<Left, Right, Data>> {
 };
 
 //  /   /   /   /   /   /   //  /   /
+
+template <typename A, typename B>
+struct node_data_is_same  {
+    static bool const value = false;
+};
+
+template <typename Left, typename Right, typename Data, typename CType, CType Value>
+struct node_data_is_same  < node<Left, Right, Data>, Constant<CType, Value>  > {
+
+    static bool const value = is_same<Data, Constant<CType, Value>>::value ;
+};
+////////////
 
 
 

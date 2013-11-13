@@ -20,8 +20,81 @@ invariant:
  <x  >=x
  */
 
+template <typename T>
+struct left_zig_zig {
+
+    typedef typename Error<T>::result result;
+};
+
+template <typename Left, typename Right, typename Data>     //not null
+struct left_zig_zig < node<Left, Right, Data> > {
+private:
+    typedef node<Left, Right, Data> Nd;
+    typedef  typename right_rotate<Nd>::result res1;
+    typedef typename right_rotate<res1>::result res2;
+
+public:
+    typedef res2 result;
+
+};
+
+// /   /   /   /   /   /   /   /
 
 
+template <typename T>
+struct right_zig_zig {
+
+    typedef typename Error<T>::result result;
+};
+
+template <typename Left, typename Right, typename Data>     //not null
+struct right_zig_zig < node<Left, Right, Data> > {
+private:
+    typedef node<Left, Right, Data> Nd;
+    typedef  typename left_rotate<Nd>::result res1;
+    typedef typename left_rotate<res1>::result res2;
+
+public:
+    typedef res2 result;
+
+};
+
+// /   /   /   /   /   /   /   /
+template <typename T>
+struct left_zig_zag {
+    typedef typename Error<T>::result result;
+};
+
+template <typename Left, typename Right, typename Data>     //not null
+struct left_zig_zag < node<Left, Right, Data> > {
+private:
+    typedef  node<typename left_rotate<Left>::result, Right, Data> res1;
+    typedef typename right_rotate<res1>::result res2;
+
+public:
+    typedef res2 result;
+
+};
+
+// /   /   /   /   /   /   /   /
+
+template <typename T>
+struct right_zig_zag {
+    typedef typename Error<T>::result result;
+};
+
+template <typename Left, typename Right, typename Data>     //not null
+struct right_zig_zag < node<Left, Right, Data> > {
+private:
+    typedef  node<Left, typename right_rotate<Right>::result, Data> res1;
+    typedef typename left_rotate<res1>::result res2;
+
+    public:
+    typedef res2 result;
+
+};
+
+ // /   /   /   /   /   /   /   /
 template <typename T, typename B>
 struct left_not_root_splay {
     typedef typename Error<T>::result result;
@@ -30,13 +103,21 @@ struct left_not_root_splay {
 template <typename Left, typename Right, typename Data, typename CType, CType Value>
 struct left_not_root_splay< node<Left, Right, Data>, Constant<CType, Value>  > {
 private:
+private:
     typedef Constant<CType, Value> Cnst;
     typedef node<Left, Right, Data> Nd;
 
+    typedef typename Left::left LLeft;
+    typedef typename Left::right LRight;
+
+
 
 public:
-
-    typedef Nd result;
+    typedef typename IF< node_data_is_same<LLeft, Cnst>::value,
+    typename left_zig_zig<Nd>::result,
+    typename IF<node_data_is_same<LRight, Cnst>::value,
+    typename left_zig_zag<Nd>::result,
+    Nd>::result >::result result;
 
 
 };
@@ -47,16 +128,25 @@ struct right_not_root_splay {
     typedef typename Error<T>::result result;
 };
 
-template <typename Left, typename Right, typename Data, typename CType, CType Value>
-struct right_not_root_splay < node<Left, Right, Data>, Constant<CType, Value>  > {
+template <typename Left, typename Right, typename Data, typename CType, CType Value>     //right not null
+struct right_not_root_splay < node<Left, Right, Data>, Constant<CType, Value> > {
 private:
     typedef Constant<CType, Value> Cnst;
     typedef node<Left, Right, Data> Nd;
 
+    typedef typename Right::left RLeft;
+    typedef typename Right::right RRight;
+
+
+
+
 
 public:
-
-    typedef Nd result;
+    typedef typename IF<node_data_is_same<RLeft, Cnst>::value,
+    typename right_zig_zag<Nd>::result,
+    typename IF<node_data_is_same<RRight, Cnst>::value,
+    typename right_zig_zig<Nd>::result,
+    Nd>::result >::result result;
 
 
 
@@ -77,9 +167,9 @@ private:
 
 public:
 
-    typedef typename IF<NOT_NIL<Left>::value && is_same<typename Left::data, Cnst>::value,
+    typedef typename IF<node_data_is_same<Left, Cnst>::value,
     typename right_rotate<Nd>::result,
-    typename IF<NOT_NIL<Right>::value && is_same<typename Right::data, Cnst>::value,
+    typename IF<node_data_is_same<Right, Cnst>::value,
     typename left_rotate<Nd>::result,
     Nd>::result >::result result;
 

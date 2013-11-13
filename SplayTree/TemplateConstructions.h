@@ -12,15 +12,6 @@
 
 #include <iostream>
 
-
-struct nil {
-};
-
-//  /   /   /   /
-
-/// /   /   /   /   /   /   /   /
-
-
 template <typename T>
 struct Error {
     typedef typename T::error_type result;
@@ -29,6 +20,19 @@ struct Error {
 };
 
 ///    /   /   /   //      /   /   //
+struct nil {
+    typedef int left;
+    typedef int right;
+    typedef int data;
+    static const bool value = false;
+
+
+};
+
+//  /   /   /   /
+
+
+
 
 template <typename T>
 struct NOT_NIL {
@@ -40,6 +44,9 @@ struct NOT_NIL<nil> {
     static bool const value = false;
 };
 /////////////////
+
+
+
 template <typename Type, Type value>
 struct Constant {
 };
@@ -128,6 +135,8 @@ struct is_same  <T, T> {
     static bool const value = true;
 };
 ////////////
+
+
 
 
 
