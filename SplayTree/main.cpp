@@ -32,23 +32,15 @@ typedef Constant<int, 19> Const19;
 typedef Constant<int, 20> Const20;
 
 typedef node<nil, nil, Const1> Tree1;
-typedef node< Tree1 , node< nil, nil, Const2 >, Const3 > Tree3;
-typedef node< Tree3 , node< nil, nil, Const4 >, Const5 > Tree5;
-typedef node< Tree5 , node< nil, nil, Const6 >, Const7 > Tree7;
-typedef node< Tree7, node< nil, nil, Const8 >, Const9 > Tree9;
-typedef node< Tree9 , node< nil, nil, Const10 >, Const11 > Tree11;
-typedef node< Tree11 , node< nil, nil, Const12 >, Const13 > Tree13;
-typedef node< Tree13 , node< nil, nil, Const14 >, Const15 > Tree15;
-typedef node< Tree15 , node< nil, nil, Const16 >, Const17 > Tree17;
-typedef node< Tree17 , node< nil, nil, Const18 >, Const19 > Tree19;
-
-
-
-
-
-
-
-
+typedef node< Tree1 , node< nil, nil, Const3 >, Const2 > Tree3;
+typedef node< Tree3 , node< nil, nil, Const5 >, Const4 > Tree5;
+typedef node< Tree5 , node< nil, nil, Const7 >, Const6 > Tree7;
+typedef node< Tree7, node< nil, nil, Const9 >, Const8 > Tree9;
+typedef node< Tree9 , node< nil, nil, Const11 >, Const10 > Tree11;
+typedef node< Tree11 , node< nil, nil, Const13 >, Const12 > Tree13;
+typedef node< Tree13 , node< nil, nil, Const15 >, Const14 > Tree15;
+typedef node< Tree15 , node< nil, nil, Const17 >, Const16 > Tree17;
+typedef node< Tree17 , node< nil, nil, Const19 >, Const18 > Tree19;
 
 
 
@@ -115,7 +107,34 @@ int main(int argc, const char * argv[])
 //
 //    debug_print_tree<typename splay<node235, Const1>::result>::print();
 //    std::cout << std::endl;
-    debug_print_tree<typename splay<Tree7, Const1>::result>::print();
+    debug_print_tree<Tree19>::print();
+    std::cout << std::endl;
+
+    debug_print_tree<typename splay<Tree19, Const3>::result>::print();
+    std::cout << std::endl;
+
+    debug_print_tree<typename splay<Tree19, Const5>::result>::print();
+    std::cout << std::endl;
+
+    debug_print_tree<typename splay<Tree19, Const6>::result>::print();
+    std::cout << std::endl;
+
+    debug_print_tree<typename splay<Tree19, Const9>::result>::print();
+    std::cout << std::endl;
+
+    debug_print_tree<typename splay<Tree19, Const11>::result>::print();
+    std::cout << std::endl;
+
+    debug_print_tree<typename splay<Tree19, Const13>::result>::print();
+    std::cout << std::endl;
+
+    debug_print_tree<typename splay<Tree19, Const12>::result>::print();
+    std::cout << std::endl;
+
+    debug_print_tree<typename splay<Tree19, Const18>::result>::print();
+    std::cout << std::endl;
+
+    debug_print_tree<nil>::print();
     std::cout << std::endl;
 
 //

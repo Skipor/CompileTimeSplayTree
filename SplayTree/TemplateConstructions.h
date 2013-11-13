@@ -12,22 +12,27 @@
 
 #include <iostream>
 
+
+// Error<T> gives crap result (T). Tree functions works well, and use that Error<nil> have "node" typedef's
+
 template <typename T>
 struct Error {
-    typedef typename T::error_type result;
+    typedef T result;
     static const bool value = T::error_bool_value;
 
 };
 
-///    /   /   /   //      /   /   //
+//    /   /   /   //      /   /   //
 struct nil {
-    typedef int left;
-    typedef int right;
-    typedef int data;
-    static const bool value = false;
+    typedef nil left;
+    typedef nil right;
+    typedef nil data;
+    static const bool error_bool_value = false;
+
 
 
 };
+
 
 //  /   /   /   /
 

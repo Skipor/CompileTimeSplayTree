@@ -139,8 +139,6 @@ private:
 
 
 
-
-
 public:
     typedef typename IF<node_data_is_same<RLeft, Cnst>::value,
     typename right_zig_zag<Nd>::result,
@@ -190,12 +188,17 @@ private:
     typedef Constant<CType, Value> Cnst;
     typedef node<Left, Right, Data> Nd;
 
+    typedef node<typename not_root_splay<Left, Cnst>::result, Right, Data> LeftCase;
+    typedef node<Left, typename not_root_splay<Right, Cnst>::result, Data> RightCase;
+
+
+
 public:
 
-    typedef typename IF<NOT_NIL<Left>::value && is_less<Data, Cnst>::value,
-    typename left_not_root_splay<Nd, Cnst>::result,        // then
-    typename IF<NOT_NIL<Right>::value && is_more<Data, Cnst>::value,    //else
-    typename right_not_root_splay<Nd, Cnst>::result,
+    typedef typename IF<NOT_NIL<Left>::value && is_less<Cnst, Data>::value,
+    typename left_not_root_splay<LeftCase, Cnst>::result,        // then
+    typename IF<NOT_NIL<Right>::value && is_more<Cnst, Data>::value,    //else
+    typename right_not_root_splay<RightCase, Cnst>::result,
     Nd>::result >::result result;
 
 

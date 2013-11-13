@@ -35,6 +35,9 @@ struct internal_print_tree {
     }
 };
 
+
+
+
 template <typename Left, typename Right, typename Data>
 struct internal_print_tree < node<Left, Right, Data> > {
 
@@ -128,6 +131,12 @@ struct debug_print_tree {
         assert(false && "Incorrect node type");
     }
 };
+template <>
+struct debug_print_tree<nil> {
+    static void print(){
+        print_type<nil>::print();
+    }
+};
 
 template <typename Left, typename Right, typename Data>
 struct debug_print_tree < node<Left, Right, Data> > {
@@ -152,6 +161,11 @@ struct left_rotate {
 
 };
 
+template <typename Right, typename Data>
+struct left_rotate<node<nil, Right, Data>> {
+    typedef nil result;
+};
+
 template <typename Left, typename Right, typename Data>
 struct left_rotate<node<Left, Right, Data>> {
     typedef node< node<Left, typename Right::left, Data>, typename Right::right, typename Right::data> result;
@@ -163,10 +177,20 @@ struct right_rotate {
     typedef typename Error<T>::result result;
 };
 
+template <typename Left, typename Data>
+struct right_rotate<node<Left, nil, Data>> {
+    typedef nil result;
+};
+
 template <typename Left, typename Right, typename Data>
 struct right_rotate<node<Left, Right, Data>> {
     typedef node<typename Left::left, node<typename Left::right, Right, Data>, typename Left::data> result;
 };
+
+//template <typename Left, typename Right, typename Data>
+//struct right_rotate<node<Left, Right, Data>> {
+//    typedef node<typename Left::left, node<typename Left::right, Right, Data>, typename Left::data> result;
+//};
 
 //  /   /   /   /   /   /   //  /   /
 
