@@ -211,8 +211,9 @@ public:
 
 template <typename T, typename B>
 struct splay {
-    typedef typename Error<T>::result result;
+    typedef typename Invalid_argument<T>::result result;
 };
+
 
 template <typename Left, typename Right, typename Data, typename CType, CType Value>
 struct splay< node<Left, Right, Data>, Constant<CType, Value>  > {
@@ -223,9 +224,28 @@ private:
     typedef typename not_root_splay<Nd, Cnst>::result res1;
 public:
     typedef typename IF_same<typename res1::data, Cnst, res1, typename zig<res1, Cnst>::result>::result result;
-
-
 };
+
+
+//template <typename T, typename B>
+//struct split {
+//    typedef typename Error<T>::result result1;
+//    typedef typename Error<T>::result result2;
+//};
+//
+//template <typename Left, typename Right, typename Data, typename CType, CType Value>
+//struct splay< node<Left, Right, Data>, Constant<CType, Value>  > {
+//private:
+//    typedef Constant<CType, Value> Cnst;
+//    typedef node<Left, Right, Data> Nd;
+//
+//    typedef typename splay<Nd, Cnst>::result res1;
+////    typedef
+//public:
+//    typedef typename IF_same<typename res1::data, Cnst, res1, typename zig<res1, Cnst>::result>::result result;
+//};
+
+
 
 
 #endif //__SplayTree_H_

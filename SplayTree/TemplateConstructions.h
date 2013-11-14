@@ -11,27 +11,38 @@
 #define __NewCppClass_H_
 
 #include <iostream>
-
-
-// Error<T> gives crap result (T). Tree functions works well, and use that Error<nil> have "node" typedef's
-
-template <typename T>
-struct Error {
-    typedef T result;
-    static const bool value = T::error_bool_value;
-
-};
-
-//    /   /   /   //      /   /   //
 struct nil {
     typedef nil left;
     typedef nil right;
     typedef nil data;
-    static const bool error_bool_value = false;
+};
 
 
+// Error<T> compile failed if T != nil. Tree functions works well, and use that Error<nil> is nil, and nil have "node" typedefs.
+
+
+template <typename T>
+struct Invalid_argument {
+    typedef typename T::error_type_result result;
+    static const bool value = T::error_bool_value;
 
 };
+template <typename T>
+struct Error {
+    typedef typename T::error_type_result result;
+    static const bool value = T::error_bool_value;
+
+};
+
+template <>
+struct Error<nil> {
+    typedef nil result;
+    static const bool value = false;
+
+};
+
+//    /   /   /   //      /   /   //
+
 
 
 //  /   /   /   /
@@ -67,11 +78,21 @@ struct print_type {
 
 };
 
+
+
 template <typename T, T value>
 struct print_type< Constant<T, value> > {
 
     static void print() {
         std::cout << value;
+    }
+
+};
+template <>
+struct print_type< nil > {
+
+    static void print() {
+        std::cout << "nil";
     }
 
 };

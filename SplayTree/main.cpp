@@ -53,6 +53,8 @@ typedef node<node3, node<nil, nil, Const5>, Const3> node335;
 
 
 
+
+
 int main(int argc, const char * argv[])
 
 {
@@ -131,11 +133,21 @@ int main(int argc, const char * argv[])
     debug_print_tree<typename splay<Tree19, Const12>::result>::print();
     std::cout << std::endl;
 
-    debug_print_tree<typename splay<Tree19, Const18>::result>::print();
+    structured_print_tree<typename splay<Tree19, Const18>::result>::print();
     std::cout << std::endl;
 
     debug_print_tree<nil>::print();
     std::cout << std::endl;
+
+    print_type<typename get_next<typename splay<Tree19, Const3>::result, Constant<int, -10> >::result>::print();
+    std::cout << std::endl;
+
+    print_type<typename get_next<typename splay<Tree19, Const3>::result, Constant<int, 19> >::result>::print();
+    std::cout << std::endl;
+
+
+
+
 
 //
 

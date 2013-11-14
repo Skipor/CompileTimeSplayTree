@@ -150,6 +150,40 @@ struct debug_print_tree < node<Left, Right, Data> > {
 
 //  /   /   /   /   /
 
+template <typename Type>
+struct structured_print_tree {
+    static void print(){
+        print_type<Type>::print();
+        assert(false && "Incorrect node type");
+    }
+};
+template <>
+struct structured_print_tree<nil> {
+    static void print(){
+        std::cout << "";
+    }
+};
+
+template <typename Left, typename Right, typename Data>
+struct structured_print_tree < node<Left, Right, Data> > {
+
+    static void print() {
+        std::cout << "(";
+        print_type<Data>::print();
+        structured_print_tree<Left>::print();
+        std::cout << " | ";
+
+        structured_print_tree<Right>::print();
+        std::cout << ")";
+
+
+    }
+};
+
+
+
+
+
 
 
 /// ////////    /////   /   /   /   /   /   /   /   /
@@ -205,6 +239,67 @@ struct node_data_is_same  < node<Left, Right, Data>, Constant<CType, Value>  > {
     static bool const value = is_same<Data, Constant<CType, Value>>::value ;
 };
 ////////////
+
+
+template <typename T>
+struct get_min {
+     typedef typename Error<T>::result result;
+};
+
+template <typename Left, typename Right, typename Data>
+struct get_min < node<Left, Right, Data> > {
+    typedef typename get_min<Left>::result result;
+};
+template <typename Right, typename Data>
+struct get_min < node<nil, Right, Data> > {
+    typedef Data result;
+};
+////////////
+
+
+template <typename T>
+struct get_max {
+    typedef typename Error<T>::result result;
+};
+
+template <typename Left, typename Right, typename Data>
+struct get_max < node<Left, Right, Data> > {
+    typedef typename get_max<Right>::result result;
+};
+template <typename Left, typename Data>
+struct get_max < node<Left, nil, Data> > {
+    typedef Data result;
+};
+////////////
+
+template <typename T, typename B>
+struct get_next {
+    typedef typename Error<T>::result result;
+};
+template <typename Left, typename Right, typename Data, typename CType, CType Value>
+struct get_next  < node<Left, Right, Data>, Constant<CType, Value>  > {
+private:
+    typedef Constant<CType, Value> Cnst;
+    typedef node<Left, Right, Data> Nd;
+    typedef typename get_next<Left, Cnst>::result LeftCase;
+    typedef typename get_next<Right,Cnst>::result RightCase;
+
+   public:
+    typedef typename IF<is_more<Data, Cnst>::value,
+    typename IF<NOT_NIL<LeftCase>::value, LeftCase, Data>::result,
+    RightCase>::result result;
+
+};
+
+//template <typename Left, typename Right, typename Data, typename CType, CType Value>
+//struct get_next  < node<Left, Right, Data>, Constant<CType, Value>  > {
+//    typedef Data result;
+//};
+//
+
+
+
+
 
 
 
