@@ -200,18 +200,18 @@ public:
     typename IF<NOT_NIL<Right>::value && is_more<Cnst, Data>::value,    //else
     typename right_not_root_splay<RightCase, Cnst>::result,
     Nd>::result >::result result;
-
-
 };
-
 
 //   /   /   /   /   /   /   /
 
-
-
 template <typename T, typename B>
 struct splay {
-    typedef typename Invalid_argument<T>::result result;
+    typedef typename Error<T>::result result;
+};
+template <typename Left, typename Right, typename Data>
+
+struct splay< node<Left, Right, Data>, nil>  {
+    typedef typename Error<nil>::result result;
 };
 
 
@@ -226,24 +226,96 @@ public:
     typedef typename IF_same<typename res1::data, Cnst, res1, typename zig<res1, Cnst>::result>::result result;
 };
 
+//   /   /   /   /   /   /   /
+//   /   /   /   /   /   /   /
+//   /   /   /   /   /   /   /
 
-//template <typename T, typename B>
-//struct split {
-//    typedef typename Error<T>::result result1;
-//    typedef typename Error<T>::result result2;
+template <typename T, typename B>
+struct split {
+    typedef typename Error<T>::result result1;
+    typedef typename Error<T>::result result2;
+};
+
+template <typename Left, typename Right, typename Data, typename CType, CType Value>
+struct split< node<Left, Right, Data>, Constant<CType, Value>  > {
+private:
+    typedef Constant<CType, Value> Cnst;
+    typedef node<Left, Right, Data> Nd;
+    typedef typename get_prev<Nd, Cnst>::result prev;
+    typedef typename IF<NOT_NIL<prev>::value, typename splay<Nd, prev>::result, nil>::result prev_splayed;
+public:
+    typedef typename IF<NOT_NIL<prev>::value, node<typename prev_splayed::left, nil, typename prev_splayed::data>, nil>::result result1;
+    typedef typename IF<NOT_NIL<prev>::value, typename prev_splayed::right, Nd>::result result2;
+};
+
+//   /   /   /   /   /   /   /
+
+template <typename T1, typename T2>
+struct merge {
+    typedef typename Error<T1>::result result1;
+};
+
+template <typename Left, typename Right, typename Data>
+struct merge<nil, node<Left, Right, Data> > {
+    typedef node<Left, Right, Data> result;
+};
+template <typename Left, typename Right, typename Data>
+struct merge<node<Left, Right, Data>, nil > {
+    typedef node<Left, Right, Data> result;
+};
+
+template <>
+struct merge<nil,nil > {
+    typedef nil result;
+};
+
+
+template <typename Left1, typename Right1, typename Data1, typename Left2, typename Right2, typename Data2>
+struct merge< node<Left1, Right1, Data1>, node<Left2, Right2, Data2>  > {
+private:
+    typedef node<Left1, Right1, Data1> T1;
+
+    typedef node<Left2, Right2, Data2> T2;
+    typedef typename splay<T2, typename get_min<T2>::result>::result T2_transformed;  // left == nil
+public:
+    typedef node<T1, typename T2_transformed::right, typename T2_transformed::data> result;
+};
+
+//   /   /   /   /   /   /   /
+
+template <typename T, typename B>
+struct insert {
+    typedef typename Error<T>::result result;
+};
+//template <typename Left, typename Right, typename Data>
+//
+//struct  insert< node<Left, Right, Data>, nil>  {
+//    typedef  node<Left, Right, Data> result;
 //};
 //
+//template <typename CType, CType Value>
+//
+//struct  insert<nil, Constant<CType, Value>>  {
+//    typedef  node<nil, nil, Constant<CType, Value> > result;
+//};
+//
+//
 //template <typename Left, typename Right, typename Data, typename CType, CType Value>
-//struct splay< node<Left, Right, Data>, Constant<CType, Value>  > {
+//struct insert < node<Left, Right, Data>, Constant<CType, Value>  > {
 //private:
 //    typedef Constant<CType, Value> Cnst;
 //    typedef node<Left, Right, Data> Nd;
 //
-//    typedef typename splay<Nd, Cnst>::result res1;
-////    typedef
+//    ;
 //public:
 //    typedef typename IF_same<typename res1::data, Cnst, res1, typename zig<res1, Cnst>::result>::result result;
 //};
+//
+//
+
+
+
+
 
 
 

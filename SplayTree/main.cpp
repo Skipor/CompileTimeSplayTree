@@ -145,6 +145,35 @@ int main(int argc, const char * argv[])
     print_type<typename get_next<typename splay<Tree19, Const3>::result, Constant<int, 19> >::result>::print();
     std::cout << std::endl;
 
+    print_type<typename get_prev<typename splay<Tree19, Const3>::result, Constant<int, -10> >::result>::print();
+    std::cout << std::endl;
+
+    print_type<typename get_prev<typename splay<Tree19, Const3>::result, Constant<int, 16> >::result>::print();
+    std::cout << std::endl;
+
+
+    typedef split<Tree19, Constant<int, 15> > splited;
+
+    debug_print_tree<typename splited::result1>::print();
+    std::cout << std::endl;
+    debug_print_tree<typename splited::result2>::print();
+    std::cout << std::endl;
+//    print_type<typename get_prev<typename splay<Tree19, Const3>::result, Constant<int, 16> >::result>::print();
+//    std::cout << std::endl;
+
+
+    debug_print_tree<typename merge<typename splited::result1, typename splited::result2>::result>::print();
+    std::cout << std::endl;
+    print_tree<typename merge<typename splited::result1, typename splited::result2>::result>::print();
+    std::cout << std::endl;
+
+
+
+
+
+
+
+
 
 
 

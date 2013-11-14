@@ -14,6 +14,13 @@
 #include "TemplateConstructions.h"
 #include <cassert>
 
+/*
+invariant:
+   x
+  / \
+ <x  >=x
+ */
+
 
 
 
@@ -43,11 +50,9 @@ struct internal_print_tree < node<Left, Right, Data> > {
 
     static void print(){
         internal_print_tree<Left>::print();
-        std::cout <<  " ";
         print_type<Data>::print();
         std::cout <<  " ";
         internal_print_tree<Right>::print();
-        std::cout <<  " ";
     }
 };
 
@@ -79,16 +84,12 @@ struct print_tree < node<Left, Right, Data> > {
     }
 };
 
-
-
 template <>
 struct print_tree<nil> {
     static void print(){
         std::cout << "nil";
     }
 };
-
-
 
 //   /   /   /   /   /   /   /
 
@@ -180,12 +181,6 @@ struct structured_print_tree < node<Left, Right, Data> > {
     }
 };
 
-
-
-
-
-
-
 /// ////////    /////   /   /   /   /   /   /   /   /
 
 
@@ -221,10 +216,6 @@ struct right_rotate<node<Left, Right, Data>> {
     typedef node<typename Left::left, node<typename Left::right, Right, Data>, typename Left::data> result;
 };
 
-//template <typename Left, typename Right, typename Data>
-//struct right_rotate<node<Left, Right, Data>> {
-//    typedef node<typename Left::left, node<typename Left::right, Right, Data>, typename Left::data> result;
-//};
 
 //  /   /   /   /   /   /   //  /   /
 
@@ -291,11 +282,28 @@ private:
 
 };
 
-//template <typename Left, typename Right, typename Data, typename CType, CType Value>
-//struct get_next  < node<Left, Right, Data>, Constant<CType, Value>  > {
-//    typedef Data result;
-//};
-//
+
+////////////
+
+template <typename T, typename B>
+struct get_prev {
+    typedef typename Error<T>::result result;
+};
+template <typename Left, typename Right, typename Data, typename CType, CType Value>
+struct get_prev  < node<Left, Right, Data>, Constant<CType, Value>  > {
+private:
+    typedef Constant<CType, Value> Cnst;
+    typedef node<Left, Right, Data> Nd;
+    typedef typename get_prev<Left, Cnst>::result LeftCase;
+    typedef typename get_prev<Right,Cnst>::result RightCase;
+
+public:
+    typedef typename IF<is_less<Data, Cnst>::value,
+    typename IF<NOT_NIL<RightCase>::value, RightCase, Data>::result,
+    LeftCase>::result result;
+};
+
+
 
 
 
