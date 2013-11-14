@@ -31,6 +31,11 @@ struct node {
     typedef Data data;
 };
 
+template <typename Data>
+struct new_tree {
+    typedef node<nil, nil, Data> result;
+};
+
 
   ////////////////////////////////
 

@@ -167,6 +167,18 @@ int main(int argc, const char * argv[])
     print_tree<typename merge<typename splited::result1, typename splited::result2>::result>::print();
     std::cout << std::endl;
 
+    std::cout<< contains<Tree19, Constant<int, 20> >::value << std::endl;
+
+    typedef typename insert<Tree19, Constant<int, 5> >::result Tree19_5;
+    print_tree<typename insert<Tree19, Constant<int, 5> >::result >::print();
+    std::cout << std::endl;
+
+    print_tree<typename erase_once<Tree19_5, Constant<int, 5> >::result >::print();
+    std::cout << std::endl;
+
+    print_tree<typename erase<Tree19_5, Constant<int, 5> >::result >::print();
+    std::cout << std::endl;
+
 
 
 

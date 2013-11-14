@@ -283,35 +283,144 @@ public:
 
 //   /   /   /   /   /   /   /
 
+
+
+template <typename T, typename B>
+struct contains{
+    static const bool value =  Error<T>::value;
+    typedef typename Error<T>::result result;
+
+};
+
+template <typename B>
+struct contains<nil,B>{
+    static const bool value = false;
+    typedef nil result;
+};
+
+template <typename Left, typename Right, typename Data, typename CType, CType Value>
+struct contains < node<Left, Right, Data>, Constant<CType, Value>  > {
+private:
+    typedef Constant<CType, Value> Cnst;
+    typedef node<Left, Right, Data> Nd;
+
+public:
+    typedef typename splay<Nd, Cnst>::result result;
+    static const bool value = is_same<typename result::data, Cnst>::value;
+};
+
+//      /   /   /   /   /   /   /
+
 template <typename T, typename B>
 struct insert {
     typedef typename Error<T>::result result;
 };
-//template <typename Left, typename Right, typename Data>
-//
-//struct  insert< node<Left, Right, Data>, nil>  {
-//    typedef  node<Left, Right, Data> result;
-//};
-//
-//template <typename CType, CType Value>
-//
-//struct  insert<nil, Constant<CType, Value>>  {
-//    typedef  node<nil, nil, Constant<CType, Value> > result;
-//};
-//
-//
-//template <typename Left, typename Right, typename Data, typename CType, CType Value>
-//struct insert < node<Left, Right, Data>, Constant<CType, Value>  > {
-//private:
-//    typedef Constant<CType, Value> Cnst;
-//    typedef node<Left, Right, Data> Nd;
-//
-//    ;
-//public:
-//    typedef typename IF_same<typename res1::data, Cnst, res1, typename zig<res1, Cnst>::result>::result result;
-//};
-//
-//
+template <typename Left, typename Right, typename Data>
+
+struct  insert< node<Left, Right, Data>, nil>  {
+    typedef  node<Left, Right, Data> result;
+};
+
+template <typename CType, CType Value>
+
+struct  insert<nil, Constant<CType, Value>>  {
+    typedef  node<nil, nil, Constant<CType, Value> > result;
+};
+
+
+
+template <typename Left, typename Right, typename Data, typename CType, CType Value>
+struct insert < node<Left, Right, Data>, Constant<CType, Value>  > {
+private:
+    typedef Constant<CType, Value> Cnst;
+    typedef node<Left, Right, Data> Nd;
+
+    typedef split<Nd, Cnst> splited;
+
+public:
+    typedef node<typename splited::result1, typename splited::result2, Cnst> result;
+};
+
+
+
+
+//   /   /   /   /   /   /   /
+
+template <typename T, typename B>
+struct erase_once {
+    typedef typename Error<T>::result result;
+};
+template <typename Left, typename Right, typename Data>
+
+struct  erase_once < node<Left, Right, Data>, nil>  {
+    typedef  node<Left, Right, Data> result;
+};
+
+template <typename T>
+
+struct  erase_once <nil, T>  {
+    typedef  nil result;
+};
+
+
+
+template <typename Left, typename Right, typename Data, typename CType, CType Value>
+struct erase_once  < node<Left, Right, Data>, Constant<CType, Value>  > {
+private:
+    typedef Constant<CType, Value> Cnst;
+    typedef node<Left, Right, Data> Nd;
+
+    typedef contains<Nd, Cnst> Contains;
+
+
+public:
+    typedef typename IF<Contains::value ,
+    typename merge<typename Contains::result::left, typename Contains::result::right>::result,
+    Nd>::result result;
+
+};
+
+
+//   /   /   /   /   /   /   /
+
+
+template <typename T, typename B>
+struct erase {
+    typedef typename Error<T>::result result;
+};
+template <typename Left, typename Right, typename Data>
+
+struct  erase< node<Left, Right, Data>, nil>  {
+    typedef  node<Left, Right, Data> result;
+};
+
+template <typename T>
+
+struct  erase<nil, T>  {
+    typedef  nil result;
+};
+
+
+
+template <typename Left, typename Right, typename Data, typename CType, CType Value>
+struct erase < node<Left, Right, Data>, Constant<CType, Value>  > {
+private:
+    typedef Constant<CType, Value> Cnst;
+    typedef node<Left, Right, Data> Nd;
+
+    typedef typename erase_once<Nd, Cnst>::result erased;
+
+public:
+    typedef typename IF<contains<erased, Cnst>::value, typename erase_once<erased, Cnst>::result, erased>::result result;
+};
+
+
+
+
+
+
+//   /   /   /   /   /   /   /
+
 
 
 
