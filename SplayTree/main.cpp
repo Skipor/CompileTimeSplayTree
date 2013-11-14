@@ -176,7 +176,7 @@ int main(int argc, const char * argv[])
     print_tree<typename erase_once<Tree19_5, Constant<int, 5> >::result >::print();
     std::cout << std::endl;
 
-    print_tree<typename erase<Tree19_5, Constant<int, 5> >::result >::print();
+    print_tree<typename erase<nil, Constant<int, 5> >::result >::print();
     std::cout << std::endl;
 
 

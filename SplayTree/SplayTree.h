@@ -383,41 +383,15 @@ public:
 
 //   /   /   /   /   /   /   /
 
-
-template <typename T, typename B>
+template <typename Nd, typename Cnst>
 struct erase {
-    typedef typename Error<T>::result result;
-};
-template <typename Left, typename Right, typename Data>
-
-struct  erase< node<Left, Right, Data>, nil>  {
-    typedef  node<Left, Right, Data> result;
-};
-
-template <typename T>
-
-struct  erase<nil, T>  {
-    typedef  nil result;
-};
-
-
-
-template <typename Left, typename Right, typename Data, typename CType, CType Value>
-struct erase < node<Left, Right, Data>, Constant<CType, Value>  > {
 private:
-    typedef Constant<CType, Value> Cnst;
-    typedef node<Left, Right, Data> Nd;
 
     typedef typename erase_once<Nd, Cnst>::result erased;
 
 public:
     typedef typename IF<contains<erased, Cnst>::value, typename erase_once<erased, Cnst>::result, erased>::result result;
 };
-
-
-
-
-
 
 //   /   /   /   /   /   /   /
 
