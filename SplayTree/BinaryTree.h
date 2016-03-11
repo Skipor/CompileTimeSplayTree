@@ -37,26 +37,24 @@ struct new_tree {
 };
 
 
-  ////////////////////////////////
+////////////////////////////////
 
 template <typename Type>
 struct internal_print_tree {
-    static void print(){
+    static void print() {
         print_type<Type>::print();
         assert(false && "Incorrect node type");
     }
 };
 
 
-
-
 template <typename Left, typename Right, typename Data>
 struct internal_print_tree < node<Left, Right, Data> > {
 
-    static void print(){
+    static void print() {
         internal_print_tree<Left>::print();
         print_type<Data>::print();
-        std::cout <<  " ";
+        std::cout << " ";
         internal_print_tree<Right>::print();
     }
 };
@@ -73,9 +71,9 @@ struct internal_print_tree<nil> {
 
 template <typename Type>
 struct print_tree {
-    static void print(){
-       print_type<Type>::print();
-       assert(false && "Incorrect node type");
+    static void print() {
+        print_type<Type>::print();
+        assert(false && "Incorrect node type");
     }
 };
 
@@ -91,7 +89,7 @@ struct print_tree < node<Left, Right, Data> > {
 
 template <>
 struct print_tree<nil> {
-    static void print(){
+    static void print() {
         std::cout << "nil";
     }
 };
@@ -101,14 +99,14 @@ struct print_tree<nil> {
 
 template <typename Type, size_t depth>
 struct debug_internal_print_tree {
-    static void print(){
+    static void print() {
         print_type<Type>::print();
         assert(false && "Incorrect node type");
     }
 };
 
 template <typename Left, typename Right, typename Data, size_t depth>
-struct debug_internal_print_tree < node<Left, Right, Data>,  depth> {
+struct debug_internal_print_tree < node<Left, Right, Data>, depth> {
 
     static void print() {
         std::cout << "(";
@@ -132,14 +130,14 @@ struct debug_internal_print_tree<nil, depth> {
 
 template <typename Type>
 struct debug_print_tree {
-    static void print(){
+    static void print() {
         print_type<Type>::print();
         assert(false && "Incorrect node type");
     }
 };
 template <>
 struct debug_print_tree<nil> {
-    static void print(){
+    static void print() {
         print_type<nil>::print();
     }
 };
@@ -149,7 +147,7 @@ struct debug_print_tree < node<Left, Right, Data> > {
 
     static void print() {
 
-        debug_internal_print_tree< node<Left, Right, Data>, (size_t)0> ::print();
+        debug_internal_print_tree< node<Left, Right, Data>, (size_t) 0> ::print();
 
     }
 };
@@ -158,14 +156,14 @@ struct debug_print_tree < node<Left, Right, Data> > {
 
 template <typename Type>
 struct structured_print_tree {
-    static void print(){
+    static void print() {
         print_type<Type>::print();
         assert(false && "Incorrect node type");
     }
 };
 template <>
 struct structured_print_tree<nil> {
-    static void print(){
+    static void print() {
         std::cout << "";
     }
 };
@@ -225,21 +223,21 @@ struct right_rotate<node<Left, Right, Data>> {
 //  /   /   /   /   /   /   //  /   /
 
 template <typename A, typename B>
-struct node_data_is_same  {
+struct node_data_is_same {
     static bool const value = false;
 };
 
 template <typename Left, typename Right, typename Data, typename CType, CType Value>
 struct node_data_is_same  < node<Left, Right, Data>, Constant<CType, Value>  > {
 
-    static bool const value = is_same<Data, Constant<CType, Value>>::value ;
+    static bool const value = is_same<Data, Constant<CType, Value>>::value;
 };
 ////////////
 
 
 template <typename T>
 struct get_min {
-     typedef typename Error<T>::result result;
+    typedef typename Error<T>::result result;
 };
 
 template <typename Left, typename Right, typename Data>
@@ -278,9 +276,9 @@ private:
     typedef Constant<CType, Value> Cnst;
     typedef node<Left, Right, Data> Nd;
     typedef typename get_next<Left, Cnst>::result LeftCase;
-    typedef typename get_next<Right,Cnst>::result RightCase;
+    typedef typename get_next<Right, Cnst>::result RightCase;
 
-   public:
+public:
     typedef typename IF<is_more<Data, Cnst>::value,
     typename IF<NOT_NIL<LeftCase>::value, LeftCase, Data>::result,
     RightCase>::result result;
@@ -300,26 +298,13 @@ private:
     typedef Constant<CType, Value> Cnst;
     typedef node<Left, Right, Data> Nd;
     typedef typename get_prev<Left, Cnst>::result LeftCase;
-    typedef typename get_prev<Right,Cnst>::result RightCase;
+    typedef typename get_prev<Right, Cnst>::result RightCase;
 
 public:
     typedef typename IF<is_less<Data, Cnst>::value,
     typename IF<NOT_NIL<RightCase>::value, RightCase, Data>::result,
     LeftCase>::result result;
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 #endif //__BinaryTree_H_

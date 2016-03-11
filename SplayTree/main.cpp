@@ -10,6 +10,7 @@
 #include "TemplateConstructions.h"
 #include "BinaryTree.h"
 #include "SplayTree.h"
+
 typedef Constant <int, 1> Const1;
 typedef Constant <int, 2> Const2;
 typedef Constant<int, 3> Const3;
@@ -32,32 +33,24 @@ typedef Constant<int, 19> Const19;
 typedef Constant<int, 20> Const20;
 
 typedef node<nil, nil, Const1> Tree1;
-typedef node< Tree1 , node< nil, nil, Const3 >, Const2 > Tree3;
-typedef node< Tree3 , node< nil, nil, Const5 >, Const4 > Tree5;
-typedef node< Tree5 , node< nil, nil, Const7 >, Const6 > Tree7;
+typedef node< Tree1, node< nil, nil, Const3 >, Const2 > Tree3;
+typedef node< Tree3, node< nil, nil, Const5 >, Const4 > Tree5;
+typedef node< Tree5, node< nil, nil, Const7 >, Const6 > Tree7;
 typedef node< Tree7, node< nil, nil, Const9 >, Const8 > Tree9;
-typedef node< Tree9 , node< nil, nil, Const11 >, Const10 > Tree11;
-typedef node< Tree11 , node< nil, nil, Const13 >, Const12 > Tree13;
-typedef node< Tree13 , node< nil, nil, Const15 >, Const14 > Tree15;
-typedef node< Tree15 , node< nil, nil, Const17 >, Const16 > Tree17;
-typedef node< Tree17 , node< nil, nil, Const19 >, Const18 > Tree19;
+typedef node< Tree9, node< nil, nil, Const11 >, Const10 > Tree11;
+typedef node< Tree11, node< nil, nil, Const13 >, Const12 > Tree13;
+typedef node< Tree13, node< nil, nil, Const15 >, Const14 > Tree15;
+typedef node< Tree15, node< nil, nil, Const17 >, Const16 > Tree17;
+typedef node< Tree17, node< nil, nil, Const19 >, Const18 > Tree19;
 
 
-
-typedef node<node<nil, nil, Const2>,node<nil, nil, Const5>, Const3 > node235;
+typedef node<node<nil, nil, Const2>, node<nil, nil, Const5>, Const3 > node235;
 
 typedef node<nil, nil, Const3> node3;
 typedef node<node3, node<nil, nil, Const5>, Const3> node335;
 
 
-
-
-
-
-
-int main(int argc, const char * argv[])
-
-{
+int main(int argc, const char *argv[]) {
 
     // insert code here...
     std::cout << "Hello, World!\n";
@@ -167,7 +160,7 @@ int main(int argc, const char * argv[])
     print_tree<typename merge<typename splited::result1, typename splited::result2>::result>::print();
     std::cout << std::endl;
 
-    std::cout<< contains<Tree19, Constant<int, 20> >::value << std::endl;
+    std::cout << contains<Tree19, Constant<int, 20> >::value << std::endl;
 
     typedef typename insert<Tree19, Constant<int, 5> >::result Tree19_5;
     print_tree<typename insert<Tree19, Constant<int, 5> >::result >::print();

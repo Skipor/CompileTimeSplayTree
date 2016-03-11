@@ -11,6 +11,7 @@
 #define __NewCppClass_H_
 
 #include <iostream>
+
 struct nil {
     typedef nil left;
     typedef nil right;
@@ -79,7 +80,6 @@ struct print_type {
 };
 
 
-
 template <typename T, T value>
 struct print_type< Constant<T, value> > {
 
@@ -108,26 +108,24 @@ struct print_type< nil > {
 
 template <typename A, typename B>
 struct is_less {
-    static  bool const value = Error<A>::value;
+    static bool const value = Error<A>::value;
 };
 
 template <typename T, T valueL, T valueR>
 struct is_less<Constant<T, valueL>, Constant<T, valueR> > {
-    static  bool const value = valueL < valueR;
+    static bool const value = valueL < valueR;
 };
-
 
 
 template <typename A, typename B>
 struct is_more {
-    static  bool const value = Error<A>::value;
+    static bool const value = Error<A>::value;
 };
-
 
 
 template <typename T, T valueL, T valueR>
 struct is_more<Constant<T, valueL>, Constant<T, valueR> > {
-    static  bool const value = valueL > valueR;
+    static bool const value = valueL > valueR;
 };
 
 /////// /   /   /   /   /   /   /
@@ -170,11 +168,6 @@ template <typename A, typename B, typename Then, typename Else>
 struct IF_same {
     typedef typename IF<is_same<A, B>::value, Then, Else>::result result;
 };
-
-
-
-
-
 
 
 #endif //__NewCppClass_H_
